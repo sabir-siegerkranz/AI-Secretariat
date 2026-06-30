@@ -27,9 +27,10 @@ body {
   position: absolute;
   inset: 0;
   display: none;
-  padding: 52px 72px 44px;
+  padding: 36px 60px 32px;
   background: #fff;
   flex-direction: column;
+  overflow-y: auto;
 }
 .slide.active { display: flex; }
 
@@ -59,8 +60,8 @@ body {
   text-transform: uppercase; margin-bottom: 10px;
 }
 .slide h2 {
-  font-size: 30px; font-weight: 700; color: #0f172a;
-  margin-bottom: 28px; line-height: 1.2;
+  font-size: 26px; font-weight: 700; color: #0f172a;
+  margin-bottom: 18px; line-height: 1.2;
 }
 
 /* ═══════════════════════════════════
@@ -84,11 +85,11 @@ body {
 ═══════════════════════════════════ */
 .area-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 20px; flex: 1;
+  gap: 14px; flex: 1;
 }
 .area-card {
-  border-radius: 8px; padding: 22px 22px 24px;
-  display: flex; flex-direction: column; gap: 10px;
+  border-radius: 8px; padding: 14px 16px 16px;
+  display: flex; flex-direction: column; gap: 7px;
 }
 .area-card.a1 { background: #eff6ff; border: 1px solid #bfdbfe; }
 .area-card.a2 { background: #f0fdf4; border: 1px solid #bbf7d0; }
@@ -97,21 +98,21 @@ body {
 .a1 .area-num { color: #2563eb; }
 .a2 .area-num { color: #059669; }
 .a3 .area-num { color: #d97706; }
-.area-card h3 { font-size: 16px; font-weight: 700; color: #0f172a; }
-.area-card p { font-size: 13px; color: #475569; line-height: 1.6; }
-.gap-label { font-size: 11px; font-weight: 700; color: #94a3b8; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+.area-card h3 { font-size: 14px; font-weight: 700; color: #0f172a; }
+.area-card p { font-size: 12px; color: #475569; line-height: 1.5; }
+.gap-label { font-size: 10px; font-weight: 700; color: #94a3b8; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.08em; }
 .gap-text {
-  font-size: 12.5px; color: #374151; line-height: 1.55;
-  background: rgba(0,0,0,0.04); padding: 10px 12px; border-radius: 5px;
+  font-size: 11.5px; color: #374151; line-height: 1.5;
+  background: rgba(0,0,0,0.04); padding: 7px 10px; border-radius: 5px;
 }
-.task-mini-list { margin-top: 12px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 12px; display: flex; flex-direction: column; gap: 7px; }
-.task-mini { display: flex; gap: 8px; align-items: flex-start; }
-.task-mini-num { font-size: 10px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
+.task-mini-list { margin-top: 8px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 8px; display: flex; flex-direction: column; gap: 5px; }
+.task-mini { display: flex; gap: 7px; align-items: flex-start; }
+.task-mini-num { font-size: 9px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
 .a1 .task-mini-num { color: #2563eb; }
 .a2 .task-mini-num { color: #059669; }
 .a3 .task-mini-num { color: #d97706; }
-.task-mini-name { font-size: 12px; font-weight: 700; color: #0f172a; }
-.task-mini-desc { font-size: 11px; color: #64748b; line-height: 1.4; }
+.task-mini-name { font-size: 11.5px; font-weight: 700; color: #0f172a; }
+.task-mini-desc { font-size: 10.5px; color: #64748b; line-height: 1.35; }
 
 /* ═══════════════════════════════════
    SLIDES 3–5 — Task Breakdown
