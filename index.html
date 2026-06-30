@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Платформа интеллектуального секретариата — BRD и Дорожная карта</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0f172a;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Slide container ── */
+.slide-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+  padding: 52px 72px 44px;
+  background: #fff;
+  flex-direction: column;
+}
+.slide.active { display: flex; }
+
+/* ── Nav bar ── */
+.nav {
+  background: #0f172a;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.nav-title { color: #475569; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
+.nav-controls { display: flex; align-items: center; gap: 14px; }
+.nav-btn {
+  background: #1e293b; border: 1px solid #334155; color: #e2e8f0;
+  padding: 5px 14px; border-radius: 4px; cursor: pointer; font-size: 12px;
+  transition: background 0.15s;
+}
+.nav-btn:hover { background: #334155; }
+.nav-btn:disabled { opacity: 0.25; cursor: default; }
+.nav-counter { color: #64748b; font-size: 12px; min-width: 52px; text-align: center; }
+
+/* ── Shared slide elements ── */
+.eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; margin-bottom: 10px;
+}
+.slide h2 {
+  font-size: 30px; font-weight: 700; color: #0f172a;
+  margin-bottom: 28px; line-height: 1.2;
+}
+
+/* ═══════════════════════════════════
+   SLIDE 1 — Title
+═══════════════════════════════════ */
+#s1 {
+  background: linear-gradient(140deg, #0f172a 0%, #1e3a5f 100%);
+  justify-content: center;
+  gap: 20px;
+}
+#s1 .eyebrow { color: #60a5fa; }
+#s1 h1 {
+  font-size: 44px; font-weight: 800; color: #f8fafc;
+  line-height: 1.15; max-width: 680px;
+}
+#s1 .subtitle { font-size: 18px; color: #94a3b8; max-width: 560px; line-height: 1.6; }
+#s1 .meta { margin-top: 48px; color: #334155; font-size: 12px; }
+
+/* ═══════════════════════════════════
+   SLIDE 2 — Scope
+═══════════════════════════════════ */
+.area-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px; flex: 1;
+}
+.area-card {
+  border-radius: 8px; padding: 22px 22px 24px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.area-card.a1 { background: #eff6ff; border: 1px solid #bfdbfe; }
+.area-card.a2 { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.area-card.a3 { background: #fffbeb; border: 1px solid #fde68a; }
+.area-num { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+.a1 .area-num { color: #2563eb; }
+.a2 .area-num { color: #059669; }
+.a3 .area-num { color: #d97706; }
+.area-card h3 { font-size: 16px; font-weight: 700; color: #0f172a; }
+.area-card p { font-size: 13px; color: #475569; line-height: 1.6; }
+.gap-label { font-size: 11px; font-weight: 700; color: #94a3b8; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+.gap-text {
+  font-size: 12.5px; color: #374151; line-height: 1.55;
+  background: rgba(0,0,0,0.04); padding: 10px 12px; border-radius: 5px;
+}
+.task-mini-list { margin-top: 12px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 12px; display: flex; flex-direction: column; gap: 7px; }
+.task-mini { display: flex; gap: 8px; align-items: flex-start; }
+.task-mini-num { font-size: 10px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
+.a1 .task-mini-num { color: #2563eb; }
+.a2 .task-mini-num { color: #059669; }
+.a3 .task-mini-num { color: #d97706; }
+.task-mini-name { font-size: 12px; font-weight: 700; color: #0f172a; }
+.task-mini-desc { font-size: 11px; color: #64748b; line-height: 1.4; }
+
+/* ═══════════════════════════════════
+   SLIDES 3–5 — Task Breakdown
+═══════════════════════════════════ */
+.task-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 14px; flex: 1;
+}
+.task-card {
+  background: #f8fafc; border: 1px solid #e2e8f0;
+  border-left: 3px solid; border-radius: 6px; padding: 15px 18px;
+}
+.task-card.c1 { border-left-color: #2563eb; }
+.task-card.c2 { border-left-color: #059669; }
+.task-card.c3 { border-left-color: #d97706; }
+.task-num { font-size: 10px; font-weight: 700; margin-bottom: 5px; }
+.c1 .task-num { color: #2563eb; }
+.c2 .task-num { color: #059669; }
+.c3 .task-num { color: #d97706; }
+.task-name { font-size: 13.5px; font-weight: 700; color: #0f172a; margin-bottom: 5px; }
+.task-desc { font-size: 12.5px; color: #64748b; line-height: 1.5; }
+
+/* ═══════════════════════════════════
+   SLIDE 6 — Definition of Done
+═══════════════════════════════════ */
+.dod-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px; flex: 1;
+}
+.dod-col {
+  border-radius: 8px; padding: 20px;
+  background: #f8fafc; border: 1px solid #e2e8f0;
+  border-top: 3px solid;
+}
+.dod-col.d1 { border-top-color: #2563eb; }
+.dod-col.d2 { border-top-color: #059669; }
+.dod-col.d3 { border-top-color: #d97706; }
+.dod-col h3 { font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 14px; }
+.dod-item { display: flex; gap: 10px; margin-bottom: 9px; align-items: flex-start; }
+.dot {
+  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 4px;
+}
+.d1 .dot { background: #2563eb; }
+.d2 .dot { background: #059669; }
+.d3 .dot { background: #d97706; }
+.dod-text { font-size: 12.5px; color: #374151; line-height: 1.5; }
+
+/* ═══════════════════════════════════
+   SLIDE 7 — Roadmap Visual
+═══════════════════════════════════ */
+.roadmap-wrap {
+  flex: 1; display: flex; flex-direction: column;
+  justify-content: center; gap: 18px;
+}
+.rm-row {
+  display: grid; grid-template-columns: 72px 1fr;
+  gap: 16px; align-items: center;
+}
+.rm-label { text-align: right; }
+.rm-label .rm-name { font-size: 12px; font-weight: 700; color: #0f172a; }
+.rm-label .rm-weeks { font-size: 11px; color: #94a3b8; }
+.rm-track { position: relative; height: 54px; }
+.rm-bar {
+  position: absolute; height: 100%; border-radius: 7px;
+  display: flex; align-items: center; padding: 0 16px;
+  color: #fff;
+}
+.rm-bar-inner { display: flex; flex-direction: column; }
+.rm-bar-title { font-size: 13px; font-weight: 600; }
+.rm-bar-sub { font-size: 11px; opacity: 0.78; }
+
+/* Bar positions (out of 28 weeks) */
+.b1 { left: 0%;      width: 21.43%; background: linear-gradient(90deg,#1d4ed8,#3b82f6); }
+.b2 { left: 14.29%;  width: 35.71%; background: linear-gradient(90deg,#6d28d9,#8b5cf6); }
+.b3 { left: 32.14%;  width: 39.29%; background: linear-gradient(90deg,#b45309,#f59e0b); }
+.b4 { left: 60.71%;  width: 39.29%; background: linear-gradient(90deg,#065f46,#10b981); }
+
+/* Week tick marks */
+.wk-row {
+  display: grid; grid-template-columns: 72px 1fr;
+  gap: 16px; margin-bottom: 2px;
+}
+.wk-track { position: relative; height: 18px; }
+.wk { position: absolute; font-size: 10px; color: #94a3b8; transform: translateX(-50%); }
+
+.roadmap-note { font-size: 12px; color: #94a3b8; margin-top: 8px; }
+
+/* ═══════════════════════════════════
+   SLIDES 8–11 — Phase Detail
+═══════════════════════════════════ */
+.phase-detail {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 28px; flex: 1;
+}
+.deliverables-list { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-top: 4px; }
+.deliverables-list li {
+  display: flex; gap: 10px;
+  font-size: 13px; color: #374151; line-height: 1.5;
+}
+.deliverables-list li::before { content: "→"; color: #94a3b8; flex-shrink: 0; }
+
+.col-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #94a3b8; margin-bottom: 14px;
+}
+.milestone-box {
+  border-radius: 8px; padding: 18px 20px; margin-bottom: 18px;
+}
+.milestone-box .m-title { font-size: 13px; font-weight: 800; margin-bottom: 8px; }
+.milestone-box .m-text { font-size: 13px; color: #374151; line-height: 1.6; }
+
+.risk-box { margin-top: 2px; }
+.risk-box .r-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #94a3b8; margin-bottom: 10px;
+}
+.risk-box .r-text { font-size: 13px; color: #475569; line-height: 1.6; }
+
+/* Phase accent colours */
+.ph1 { color: #1d4ed8; }
+.ph2 { color: #6d28d9; }
+.ph3 { color: #b45309; }
+.ph4 { color: #065f46; }
+
+.mb-p1 { background: #eff6ff; border: 1px solid #bfdbfe; }
+.mb-p1 .m-title { color: #1d4ed8; }
+.mb-p2 { background: #f5f3ff; border: 1px solid #ddd6fe; }
+.mb-p2 .m-title { color: #6d28d9; }
+.mb-p3 { background: #fffbeb; border: 1px solid #fde68a; }
+.mb-p3 .m-title { color: #b45309; }
+.mb-p4 { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.mb-p4 .m-title { color: #065f46; }
+</style>
+</head>
+<body>
+
+<div class="slide-container">
+
+<!-- ═══ 1 · TITLE ═══ -->
+<div class="slide active" id="s1">
+  <div class="eyebrow">Unibank · Инициатива корпоративного секретариата</div>
+  <h1>Платформа интеллектуального секретариата</h1>
+  <div class="subtitle">Бизнес-требования и дорожная карта реализации</div>
+  <div class="meta">Июнь 2026 &nbsp;·&nbsp; Конфиденциально</div>
+</div>
+
+<!-- ═══ 2 · SCOPE + TASKS ═══ -->
+<div class="slide" id="s2">
+  <div class="eyebrow" style="color:#2563eb;">Охват проекта</div>
+  <h2>Три бизнес-направления</h2>
+  <div class="area-grid">
+    <div class="area-card a1">
+      <div class="area-num">Направление 1</div>
+      <h3>Интеллект коллегиальных органов</h3>
+      <p>Запись, транскрипция и структурированная фиксация всех заседаний комитетов и правления банка — с автоматическим извлечением решений и поручений.</p>
+      <div class="gap-label">Текущая проблема</div>
+      <div class="gap-text">Заседания частично фиксируются, но протоколы недостаточны. ЦБ официально указал на неудовлетворительное качество документации.</div>
+      <div class="task-mini-list">
+        <div class="task-mini"><div class="task-mini-num">1.1</div><div><div class="task-mini-name">Организация записи заседаний</div><div class="task-mini-desc">Аудио/видеозапись для очных залов; Teams уже покрыт</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">1.2</div><div><div class="task-mini-name">Многоязычная транскрипция</div><div class="task-mini-desc">RU / AZ / EN / TR, включая переключение внутри предложения</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">1.3</div><div><div class="task-mini-name">Проверка и редактирование транскриптов</div><div class="task-mini-desc">Удаление неформальных высказываний перед архивированием</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">1.4</div><div><div class="task-mini-name">Извлечение решений и поручений</div><div class="task-mini-desc">AI-структурирование: ответственный, срок, статус</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">1.5</div><div><div class="task-mini-name">Уведомления и отслеживание</div><div class="task-mini-desc">Outlook-напоминания за T−7 и T−1; эскалация</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">1.6</div><div><div class="task-mini-name">Архив и база знаний</div><div class="task-mini-desc">Поисковый архив; фундамент AI-базы знаний</div></div></div>
+      </div>
+    </div>
+    <div class="area-card a2">
+      <div class="area-num">Направление 2</div>
+      <h3>Реестр регуляторных предписаний</h3>
+      <p>Централизованный учёт всех предписаний от ЦБ, судов и прочих органов власти — вместо разрозненных Excel-таблиц.</p>
+      <div class="gap-label">Текущая проблема</div>
+      <div class="gap-text">Отсутствует единый источник истины. Дублирующиеся трекеры, нет автоматических напоминаний, нет структурированного управления доказательствами.</div>
+      <div class="task-mini-list">
+        <div class="task-mini"><div class="task-mini-num">2.1</div><div><div class="task-mini-name">Инвентаризация предписаний</div><div class="task-mini-desc">Консолидация всех Excel-таблиц в единый датасет</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">2.2</div><div><div class="task-mini-name">Проектирование и создание реестра</div><div class="task-mini-desc">Источник, тип, ответственный, срок, статус, документы</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">2.3</div><div><div class="task-mini-name">Назначение ответственных и сроков</div><div class="task-mini-desc">Процесс назначения при регистрации каждого предписания</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">2.4</div><div><div class="task-mini-name">Прикрепление доказательств и ответов</div><div class="task-mini-desc">Загрузка документов; полный журнал аудита</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">2.5</div><div><div class="task-mini-name">Напоминания и эскалация</div><div class="task-mini-desc">За T−14 и T−3 дня; эскалация при просрочке</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">2.6</div><div><div class="task-mini-name">AI-проверка полноты ответа</div><div class="task-mini-desc">Анализ ответа перед внешней отправкой</div></div></div>
+      </div>
+    </div>
+    <div class="area-card a3">
+      <div class="area-num">Направление 3</div>
+      <h3>Интеллект входящей корреспонденции</h3>
+      <p>AI-анализ и маршрутизация всей входящей корреспонденции по всем каналам (email, государственные порталы, бумажная почта) поверх существующего документооборота.</p>
+      <div class="gap-label">Текущая проблема</div>
+      <div class="gap-text">СЭД отслеживает метаданные процесса, но не анализирует содержимое документов. Маршрутизация и понимание — полностью ручные.</div>
+      <div class="task-mini-list">
+        <div class="task-mini"><div class="task-mini-num">3.1</div><div><div class="task-mini-name">Приём по всем каналам</div><div class="task-mini-desc">Email, госпорталы, бумажная почта через OCR</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">3.2</div><div><div class="task-mini-name">AI-анализ и резюмирование</div><div class="task-mini-desc">Отправитель, тема, тип запроса, сроки, резюме</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">3.3</div><div><div class="task-mini-name">Предложение ответственного</div><div class="task-mini-desc">AI-рекомендация; подтверждение Орготделом</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">3.4</div><div><div class="task-mini-name">Интеграция с СЭД</div><div class="task-mini-desc">Оценка точек интеграции; согласование дизайна с ИТ</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">3.5</div><div><div class="task-mini-name">Отслеживание и мониторинг SLA</div><div class="task-mini-desc">Статус от получения до отправки; оповещения о нарушениях</div></div></div>
+        <div class="task-mini"><div class="task-mini-num">3.6</div><div><div class="task-mini-name">Журнал аудита и отчётность</div><div class="task-mini-desc">Сквозная запись; сводная отчётность для руководства</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 6 · DEFINITION OF DONE ═══ -->
+<div class="slide" id="s6">
+  <div class="eyebrow" style="color:#475569;">Критерии приёмки</div>
+  <h2>Определение готовности</h2>
+  <div class="dod-grid">
+    <div class="dod-col d1">
+      <h3>Направление 1 · Коллегиальные органы</h3>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">100% запланированных заседаний всех коллегиальных органов зафиксированы и транскрибированы</div></div>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">Все транскрипты проверены и заархивированы Секретариатом в течение 48 часов после заседания</div></div>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">Каждое решение имеет указанного ответственного и зафиксированный срок исполнения</div></div>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">Ответственным отправляются автоматические уведомления; напоминания за T−7 и T−1 день</div></div>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">Архив доступен для поиска по дате, органу, теме, решению и ответственному</div></div>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">Протоколы заседаний соответствуют требованиям документации Центрального банка</div></div>
+    </div>
+    <div class="dod-col d2">
+      <h3>Направление 2 · Регуляторные предписания</h3>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">Все активные предписания — в единой системе; активные Excel-таблицы более не используются</div></div>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">Каждое предписание имеет ответственного, срок, статус и прикреплённый документ-ответ</div></div>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">Автоматические напоминания за T−14 и T−3 дня; эскалация при отсутствии ответа</div></div>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">AI-проверка полноты ответа выполнена до каждой внешней отправки</div></div>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">Ни одно предписание не пропущено или не просрочено без видимости на уровне руководства</div></div>
+    </div>
+    <div class="dod-col d3">
+      <h3>Направление 3 · Корреспонденция</h3>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">Вся входящая корреспонденция (все каналы) оцифрована в тот же рабочий день</div></div>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">AI-резюме и рекомендация по маршрутизации формируются для каждого поступившего письма</div></div>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">Назначение подтверждено Организационным отделом в пределах согласованного SLA</div></div>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">Статус ответа отслеживается сквозным образом с автоматическими оповещениями о нарушении SLA</div></div>
+      <div class="dod-item"><div class="dot"></div><div class="dod-text">Полная аудиторская запись от получения до финальной отправки по каждому письму</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 7 · ROADMAP OVERVIEW ═══ -->
+<div class="slide" id="s7">
+  <div class="eyebrow" style="color:#475569;">Дорожная карта</div>
+  <h2>Поэтапный план на 28 недель</h2>
+  <div class="roadmap-wrap">
+    <div class="wk-row">
+      <div></div>
+      <div class="wk-track">
+        <span class="wk" style="left:0%">Н1</span>
+        <span class="wk" style="left:18%">Н6</span>
+        <span class="wk" style="left:32%">Н10</span>
+        <span class="wk" style="left:46%">Н14</span>
+        <span class="wk" style="left:61%">Н18</span>
+        <span class="wk" style="left:75%">Н22</span>
+        <span class="wk" style="left:96%">Н28</span>
+      </div>
+    </div>
+    <div class="rm-row">
+      <div class="rm-label">
+        <div class="rm-name">Фаза 1</div>
+        <div class="rm-weeks">Н 1–6</div>
+      </div>
+      <div class="rm-track">
+        <div class="rm-bar b1">
+          <div class="rm-bar-inner">
+            <span class="rm-bar-title">Реестр регуляторных предписаний</span>
+            <span class="rm-bar-sub">Направление 2 — запуск</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rm-row">
+      <div class="rm-label">
+        <div class="rm-name">Фаза 2</div>
+        <div class="rm-weeks">Н 5–14</div>
+      </div>
+      <div class="rm-track">
+        <div class="rm-bar b2">
+          <div class="rm-bar-inner">
+            <span class="rm-bar-title">Интеллект коллегиальных органов</span>
+            <span class="rm-bar-sub">Направление 1 — запуск</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rm-row">
+      <div class="rm-label">
+        <div class="rm-name">Фаза 3</div>
+        <div class="rm-weeks">Н 10–20</div>
+      </div>
+      <div class="rm-track">
+        <div class="rm-bar b3">
+          <div class="rm-bar-inner">
+            <span class="rm-bar-title">Интеллект корреспонденции</span>
+            <span class="rm-bar-sub">Направление 3 — пилот</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rm-row">
+      <div class="rm-label">
+        <div class="rm-name">Фаза 4</div>
+        <div class="rm-weeks">Н 18–28</div>
+      </div>
+      <div class="rm-track">
+        <div class="rm-bar b4">
+          <div class="rm-bar-inner">
+            <span class="rm-bar-title">Единая интеллектуальная платформа</span>
+            <span class="rm-bar-sub">Межнаправленная интеграция</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="roadmap-note">Фазы намеренно перекрываются — последующие начинаются после стабилизации инфраструктуры предыдущих. Сроки ориентировочны и зависят от возможностей ИТ.</div>
+</div>
+
+<!-- ═══ 8 · PHASE 1 ═══ -->
+<div class="slide" id="s8">
+  <div class="eyebrow ph1">Фаза 1 · Недели 1–6</div>
+  <h2>Реестр регуляторных предписаний</h2>
+  <div class="phase-detail">
+    <div>
+      <div class="col-label">Результаты</div>
+      <ul class="deliverables-list">
+        <li>Инвентаризация всех активных предписаний по всем источникам и подразделениям</li>
+        <li>Единый реестр запущен (платформа на усмотрение ИТ — SharePoint или отдельный инструмент)</li>
+        <li>Все активные предписания перенесены из Excel в реестр</li>
+        <li>Процесс назначения ответственных и сроков введён в эксплуатацию</li>
+        <li>Автоматические напоминания в Outlook запущены: за T−14 и T−3 дня</li>
+        <li>Механизм загрузки ответов/доказательств с журналом аудита работает</li>
+        <li>Excel-таблицы официально выведены из оборота, доступ ограничен</li>
+      </ul>
+    </div>
+    <div>
+      <div class="col-label">Веха</div>
+      <div class="milestone-box mb-p1">
+        <div class="m-title">В1 — Запуск реестра</div>
+        <div class="m-text">Все активные регуляторные предписания отслеживаются в единой системе с автоматическими напоминаниями, управлением доказательствами и полным журналом аудита. Ни одно предписание не может быть пропущено без уведомления руководства.</div>
+      </div>
+      <div class="risk-box">
+        <div class="r-label">Почему первой</div>
+        <div class="r-text">Наименьшая зависимость от инфраструктуры среди трёх направлений. Может быть реализована на базе существующего Microsoft 365 без новых AI-интеграций или изменений СЭД. Обеспечивает немедленную ценность и формирует организационные привычки, на которых строятся последующие фазы.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 9 · PHASE 2 ═══ -->
+<div class="slide" id="s9">
+  <div class="eyebrow ph2">Фаза 2 · Недели 5–14</div>
+  <h2>Интеллект коллегиальных органов</h2>
+  <div class="phase-detail">
+    <div>
+      <div class="col-label">Результаты</div>
+      <ul class="deliverables-list">
+        <li>Инфраструктура записи развёрнута во всех залах для очных заседаний</li>
+        <li>Конвейер обработки записей Teams интегрирован; исторические записи обработаны</li>
+        <li>Многоязычный конвейер транскрипции запущен (RU / AZ / EN / TR, включая переключение внутри предложений)</li>
+        <li>Интерфейс проверки и редактирования транскриптов для сотрудников Секретариата</li>
+        <li>AI-извлечение решений, поручений, ответственных и сроков</li>
+        <li>Уведомления и напоминания по поручениям через Outlook работают</li>
+        <li>Поисковый архив заседаний доступен авторизованным пользователям</li>
+      </ul>
+    </div>
+    <div>
+      <div class="col-label">Веха</div>
+      <div class="milestone-box mb-p2">
+        <div class="m-title">В2 — Запуск интеллекта заседаний</div>
+        <div class="m-text">Все заседания коллегиальных органов зафиксированы, транскрибированы и структурированы. Решения и поручения отслеживаются с автоматическим сопровождением. Протоколы соответствуют требованиям документации ЦБ.</div>
+      </div>
+      <div class="risk-box">
+        <div class="r-label">Ключевой риск</div>
+        <div class="r-text">Точность многоязычной транскрипции — в особенности при переключении языков внутри предложения — требует валидации модели до полного запуска. Пилот на 3–5 реальных заседаниях должен предшествовать производственному развёртыванию.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 10 · PHASE 3 ═══ -->
+<div class="slide" id="s10">
+  <div class="eyebrow ph3">Фаза 3 · Недели 10–20</div>
+  <h2>Интеллект входящей корреспонденции</h2>
+  <div class="phase-detail">
+    <div>
+      <div class="col-label">Результаты</div>
+      <ul class="deliverables-list">
+        <li>Слой приёма по всем каналам: email, госпорталы, отсканированная бумажная почта</li>
+        <li>AI-анализ содержимого: отправитель, тема, тип запроса, сроки, краткое резюме</li>
+        <li>Рекомендация ответственного предоставляется Организационному отделу для подтверждения</li>
+        <li>Отчёт об оценке интеграции с СЭД и согласованный дизайн интеграции (совместно с ИТ)</li>
+        <li>Отслеживание ответов с мониторингом SLA — в рамках пилота</li>
+        <li>Сквозная аудиторская запись по каждому письму</li>
+      </ul>
+    </div>
+    <div>
+      <div class="col-label">Веха</div>
+      <div class="milestone-box mb-p3">
+        <div class="m-title">В3 — Пилот интеллекта корреспонденции</div>
+        <div class="m-text">AI-слой анализа функционирует для определённого подмножества каналов. Точность рекомендаций по маршрутизации проверена. Полный запуск зависит от результатов пилота и готовности интеграции с СЭД.</div>
+      </div>
+      <div class="risk-box">
+        <div class="r-label">Ключевой риск</div>
+        <div class="r-text">Существующая СЭД может потребовать переработки процессов до возможности интеграции AI. Фаза 3 начинается с оценки инфраструктуры; при выявлении существенных изменений сроки соответственно сдвигаются.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 11 · PHASE 4 ═══ -->
+<div class="slide" id="s11">
+  <div class="eyebrow ph4">Фаза 4 · Недели 18–28</div>
+  <h2>Единая интеллектуальная платформа</h2>
+  <div class="phase-detail">
+    <div>
+      <div class="col-label">Результаты</div>
+      <ul class="deliverables-list">
+        <li>Единый дашборд: все задачи, сроки и поручения по всем трём направлениям в одном представлении</li>
+        <li>Межнаправленные связи: решения заседаний привязаны к предписаниям и письмам</li>
+        <li>AI-база знаний из архива заседаний — поисковая история решений и их обоснований</li>
+        <li>Управленческая отчётность: статус соответствия, просроченные задачи, процент исполнения поручений</li>
+        <li>Интеллект корреспонденции расширен на все каналы после валидации пилота</li>
+        <li>Оценка развёртывания AI на собственной инфраструктуре (если облачная фаза подтвердила операционную модель)</li>
+      </ul>
+    </div>
+    <div>
+      <div class="col-label">Веха</div>
+      <div class="milestone-box mb-p4">
+        <div class="m-title">В4 — Платформа интеллектуального секретариата v1</div>
+        <div class="m-text">Интегрированная платформа с полной видимостью по управлению, регуляторным обязательствам и корреспонденции — с автоматическим отслеживанием, напоминаниями и AI-анализом для Секретариата и руководства.</div>
+      </div>
+      <div class="risk-box">
+        <div class="r-label">Примечание</div>
+        <div class="r-text">Фаза 4 — целевое состояние, а не точка отсчёта. Фактический объём и сроки будут уточнены по результатам фаз 1–3. Решение о переходе с облака на собственную инфраструктуру принимается по завершении фазы 3.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /slide-container -->
+
+<!-- Nav -->
+<div class="nav">
+  <div class="nav-title">Платформа интеллектуального секретариата &nbsp;·&nbsp; BRD и Дорожная карта &nbsp;·&nbsp; Июнь 2026</div>
+  <div class="nav-controls">
+    <button class="nav-btn" id="prev-btn" onclick="go(-1)" disabled>← Назад</button>
+    <span class="nav-counter" id="ctr">1 / 8</span>
+    <button class="nav-btn" id="next-btn" onclick="go(1)">Вперёд →</button>
+  </div>
+</div>
+
+<script>
+const slides = ['s1','s2','s6','s7','s8','s9','s10','s11'];
+let cur = 0;
+
+function go(d) {
+  document.getElementById(slides[cur]).classList.remove('active');
+  cur = Math.max(0, Math.min(slides.length - 1, cur + d));
+  document.getElementById(slides[cur]).classList.add('active');
+  document.getElementById('ctr').textContent = (cur + 1) + ' / ' + slides.length;
+  document.getElementById('prev-btn').disabled = cur === 0;
+  document.getElementById('next-btn').disabled = cur === slides.length - 1;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   go(-1);
+});
+</script>
+</body>
+</html>
